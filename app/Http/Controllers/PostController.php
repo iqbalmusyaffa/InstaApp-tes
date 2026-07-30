@@ -48,7 +48,7 @@ class PostController extends Controller
         ]);
 
         return redirect()
-            ->route('posts.index')
+            ->route('dashboard')
             ->with('success', 'Postingan berhasil dibuat.');
     }
 
@@ -97,7 +97,7 @@ class PostController extends Controller
         $post->save();
 
         return redirect()
-            ->route('posts.index')
+            ->route('dashboard')
             ->with('success', 'Postingan berhasil diupdate.');
     }
 
@@ -115,7 +115,7 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()
-            ->route('posts.index')
+            ->route('dashboard')
             ->with('success', 'Postingan berhasil dihapus.');
     }
 }
