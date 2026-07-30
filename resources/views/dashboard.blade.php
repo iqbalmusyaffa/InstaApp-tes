@@ -81,7 +81,7 @@
                     @csrf
                     <div class="flex gap-3 mb-1">
                         <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-8 h-8 rounded-full border border-gray-200 flex-shrink-0">
-                        <textarea name="caption" rows="2" class="w-full outline-none text-sm resize-none bg-transparent pt-1 placeholder-gray-400 @error('caption') border-red-500 @enderror" placeholder="What's on your mind, {{ Auth::user()->name }}?">{{ old('caption') }}</textarea>
+                        <textarea name="caption" rows="2" class="w-full border-0 focus:ring-0 text-sm resize-none bg-transparent p-1 placeholder-gray-400" placeholder="What's on your mind, {{ Auth::user()->name }}?">{{ old('caption') }}</textarea>
                     </div>
                     @error('caption')
                         <div class="text-red-500 text-xs ml-11 mb-2">{{ $message }}</div>
@@ -166,7 +166,7 @@
                     @endif
                     <form action="{{ route('comments.store', $post) }}" method="POST" class="flex items-center gap-2 border-t border-gray-100 pt-2 mt-2">
                         @csrf
-                        <input type="text" name="comment" placeholder="Add a comment..." class="w-full text-sm outline-none bg-transparent py-1" required>
+                        <input type="text" name="comment" placeholder="Add a comment..." class="w-full text-sm border-0 focus:ring-0 p-0 bg-transparent" required>
                         <button type="submit" class="text-blue-500 font-semibold text-sm">Post</button>
                     </form>
                 </div>
