@@ -62,7 +62,6 @@
     <main class="max-w-5xl mx-auto pt-20 px-4 flex justify-center gap-8 pb-14 sm:pb-10">
         <div class="w-full max-w-[470px] flex flex-col gap-6">
 
-            <!-- Validation Errors -->
             @if ($errors->any())
                 <div class="bg-red-50 border border-red-200 text-red-600 rounded-sm p-3 text-sm">
                     @foreach ($errors->all() as $error)
@@ -71,25 +70,37 @@
                 </div>
             @endif
 
-            <!-- Create Post Box -->
             <div class="bg-white border border-gray-200 rounded-sm p-4">
-                <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="flex gap-3 mb-3">
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-8 h-8 rounded-full border border-gray-200 flex-shrink-0">
-                        <textarea name="caption" rows="2" class="w-full outline-none text-sm resize-none bg-transparent pt-1 placeholder-gray-400" placeholder="What's on your mind, {{ Auth::user()->name }}?">{{ old('caption') }}</textarea>
+                @if(session('success'))
+                    <div class="bg-green-50 border border-green-200 text-green-600 rounded-sm p-3 text-sm mb-3 font-semibold">
+                        {{ session('success') }}
                     </div>
+                @endif
+                
+                <form action="/posts" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="flex gap-3 mb-1">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-8 h-8 rounded-full border border-gray-200 flex-shrink-0">
+                        <textarea name="caption" rows="2" class="w-full outline-none text-sm resize-none bg-transparent pt-1 placeholder-gray-400 @error('caption') border-red-500 @enderror" placeholder="What's on your mind, {{ Auth::user()->name }}?">{{ old('caption') }}</textarea>
+                    </div>
+                    @error('caption')
+                        <div class="text-red-500 text-xs ml-11 mb-2">{{ $message }}</div>
+                    @enderror
+
                     <div class="flex items-center justify-between border-t border-gray-100 pt-3 mt-2">
-                        <input type="file" name="image" class="text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*">
+                        <div>
+                            <input type="file" name="image" class="text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*">
+                            @error('image')
+                                <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
                         <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm px-4 py-1.5 rounded-md transition-colors">Post</button>
                     </div>
                 </form>
             </div>
 
-            <!-- Posts Feed -->
             @forelse($posts as $post)
             <div class="bg-white border border-gray-200 rounded-sm">
-                <!-- Header -->
                 <div class="flex items-center justify-between p-3">
                     <div class="flex items-center gap-3">
                         <img src="https://ui-avatars.com/api/?name={{ urlencode($post->user->name) }}&background=random" class="w-8 h-8 rounded-full border border-gray-200">
@@ -104,9 +115,7 @@
                     </form>
                     @endif
                 </div>
-                <!-- Image -->
                 <img src="{{ asset('storage/' . $post->image) }}" class="w-full object-cover aspect-square bg-gray-100">
-                <!-- Actions -->
                 <div class="p-3">
                     <div class="flex gap-4 mb-2">
                         <button class="text-black hover:text-gray-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button>
@@ -119,7 +128,6 @@
                     @if($post->comments->count() > 0)
                     <div class="text-gray-400 text-sm mt-1 mb-2">View all {{ $post->comments->count() }} comments</div>
                     @endif
-                    <!-- Comment Input -->
                     <div class="flex items-center gap-2 border-t border-gray-100 pt-2 mt-2">
                         <input type="text" placeholder="Add a comment..." class="w-full text-sm outline-none bg-transparent py-1">
                         <button class="text-blue-500 font-semibold text-sm">Post</button>

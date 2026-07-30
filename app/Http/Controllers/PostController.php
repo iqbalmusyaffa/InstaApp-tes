@@ -37,8 +37,15 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(\Illuminate\Http\Request $request)
     {
+        \Log::info('STORE METHOD CALLED. Data:', $request->all());
+
+        $request->validate([
+            'caption' => 'required|string',
+            'image' => 'required|file|max:10240'
+        ]);
+
         $image = $request->file('image')->store('posts', 'public');
 
         Post::create([

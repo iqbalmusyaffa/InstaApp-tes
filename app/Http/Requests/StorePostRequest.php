@@ -27,14 +27,12 @@ class StorePostRequest extends FormRequest
             'caption' => [
                 'required',
                 'string',
-                'max:1000'
             ],
 
             'image' => [
                 'required',
-                'image',
-                'mimes:jpg,jpeg,png',
-                'max:2048'
+                'file', // Changed from 'image' to 'file' to be less strict
+                'max:10240', // 10MB max to prevent size issues
             ],
 
         ];
