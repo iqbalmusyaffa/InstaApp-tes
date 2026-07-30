@@ -117,8 +117,19 @@
                 </div>
                 <img src="{{ asset('storage/' . $post->image) }}" class="w-full object-cover aspect-square bg-gray-100">
                 <div class="p-3">
-                    <div class="flex gap-4 mb-2">
-                        <button class="text-black hover:text-gray-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></button>
+                    <div class="flex gap-4 mb-2 items-center">
+                        @php
+                            $hasLiked = $post->likes->where('user_id', Auth::id())->count() > 0;
+                        @endphp
+                        <form action="{{ $hasLiked ? route('posts.unlike', $post) : route('posts.like', $post) }}" method="POST" class="inline">
+                            @csrf
+                            @if($hasLiked)
+                                @method('DELETE')
+                            @endif
+                            <button type="submit" class="{{ $hasLiked ? 'text-red-500' : 'text-black hover:text-gray-500' }}">
+                                <svg class="w-6 h-6 {{ $hasLiked ? 'fill-current' : 'fill-none' }}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            </button>
+                        </form>
                         <button class="text-black hover:text-gray-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
                     </div>
                     <div class="font-semibold text-sm mb-1">{{ $post->likes->count() }} likes</div>
@@ -126,12 +137,20 @@
                         <span class="font-semibold">{{ $post->user->name }}</span> {{ $post->caption }}
                     </div>
                     @if($post->comments->count() > 0)
-                    <div class="text-gray-400 text-sm mt-1 mb-2">View all {{ $post->comments->count() }} comments</div>
-                    @endif
-                    <div class="flex items-center gap-2 border-t border-gray-100 pt-2 mt-2">
-                        <input type="text" placeholder="Add a comment..." class="w-full text-sm outline-none bg-transparent py-1">
-                        <button class="text-blue-500 font-semibold text-sm">Post</button>
+                    <div class="mt-2 text-sm max-h-24 overflow-y-auto space-y-1">
+                        @foreach($post->comments as $comment)
+                            <div>
+                                <span class="font-semibold">{{ $comment->user->name }}</span> 
+                                <span class="text-gray-800">{{ $comment->comment }}</span>
+                            </div>
+                        @endforeach
                     </div>
+                    @endif
+                    <form action="{{ route('comments.store', $post) }}" method="POST" class="flex items-center gap-2 border-t border-gray-100 pt-2 mt-2">
+                        @csrf
+                        <input type="text" name="comment" placeholder="Add a comment..." class="w-full text-sm outline-none bg-transparent py-1" required>
+                        <button type="submit" class="text-blue-500 font-semibold text-sm">Post</button>
+                    </form>
                 </div>
             </div>
             @empty
