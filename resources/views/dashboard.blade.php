@@ -33,9 +33,7 @@
         <div class="max-w-5xl mx-auto px-4 h-14 flex justify-between items-center">
             <a href="/dashboard" class="font-brand text-2xl text-black">InstaApp</a>
 
-            <div class="hidden sm:block">
-                <input type="text" placeholder="Search..." class="bg-gray-100 border-none rounded-md px-4 py-1.5 text-sm w-64 focus:ring-1 focus:ring-gray-300">
-            </div>
+
 
             <div class="flex items-center gap-5">
                 <a href="/dashboard" class="text-black">
@@ -185,30 +183,6 @@
                 </div>
             </div>
 
-            <div class="text-gray-500 font-semibold text-sm mb-4">Suggestions for you</div>
-
-            <div class="flex flex-col gap-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name=Alex&background=random" class="w-8 h-8 rounded-full border border-gray-200">
-                        <div>
-                            <div class="font-semibold text-sm">alex_dev</div>
-                            <div class="text-gray-400 text-xs">New to InstaApp</div>
-                        </div>
-                    </div>
-                    <button class="text-blue-500 text-xs font-semibold hover:text-blue-700">Follow</button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name=Sarah&background=random" class="w-8 h-8 rounded-full border border-gray-200">
-                        <div>
-                            <div class="font-semibold text-sm">sarah_codes</div>
-                            <div class="text-gray-400 text-xs">Suggested for you</div>
-                        </div>
-                    </div>
-                    <button class="text-blue-500 text-xs font-semibold hover:text-blue-700">Follow</button>
-                </div>
-            </div>
 
             <div class="mt-8 text-xs text-gray-400">
                 <p>&copy; {{ date('Y') }} InstaApp. Built for Technical Test.</p>

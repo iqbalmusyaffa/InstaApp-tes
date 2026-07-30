@@ -15,9 +15,7 @@
     <nav class="bg-white border-b border-gray-200 fixed w-full top-0 z-50">
         <div class="max-w-5xl mx-auto px-4 h-14 flex justify-between items-center">
             <a href="/dashboard" class="font-brand text-2xl text-black">InstaApp</a>
-            <div class="hidden sm:block">
-                <input type="text" placeholder="Search..." class="bg-gray-100 border-none rounded-md px-4 py-1.5 text-sm w-64 focus:ring-1 focus:ring-gray-300">
-            </div>
+
             <div class="flex items-center gap-5">
                 <a href="/dashboard" class="text-black">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
