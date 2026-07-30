@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreCommentRequest;
-use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
+    /**
+     * Menambahkan komentar
+     */
     public function store(StoreCommentRequest $request, Post $post)
     {
         Comment::create([
@@ -21,11 +23,12 @@ class CommentController extends Controller
         return back()->with('success', 'Komentar berhasil ditambahkan.');
     }
 
+    /**
+     * Menghapus komentar
+     */
     public function destroy(Comment $comment)
     {
-        if ($comment->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('delete', $comment);
 
         $comment->delete();
 

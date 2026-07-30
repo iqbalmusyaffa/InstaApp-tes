@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
 
 class PostController extends Controller
 {
@@ -16,13 +16,17 @@ class PostController extends Controller
      */
     public function index()
     {
-         $posts = Post::with('user')
-            ->latest()
-            ->get();
+        $posts = Post::with([
+            'user',
+            'likes',
+            'comments.user'
+        ])
+        ->latest()
+        ->get();
 
         return response()->json([
             'success' => true,
-            'message' => 'Data post berhasil diambil',
+            'message' => 'Data post berhasil diambil.',
             'data' => $posts
         ]);
     }
@@ -30,13 +34,8 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-         $request->validate([
-            'caption' => 'required|max:1000',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
-
         $image = $request->file('image')->store('posts', 'public');
 
         $post = Post::create([
@@ -47,7 +46,7 @@ class PostController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Post berhasil dibuat',
+            'message' => 'Post berhasil dibuat.',
             'data' => $post
         ], 201);
     }
@@ -55,46 +54,43 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post)
     {
-         return response()->json([
+        $post->load([
+            'user',
+            'likes',
+            'comments.user'
+        ]);
+
+        return response()->json([
             'success' => true,
-            'data' => $post->load('user')
+            'data' => $post
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-          if ($post->user_id != Auth::id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized'
-            ], 403);
-        }
-
-        $request->validate([
-            'caption' => 'required|max:1000',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
+        $this->authorize('update', $post);
 
         if ($request->hasFile('image')) {
 
-            Storage::disk('public')->delete($post->image);
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
 
             $post->image = $request->file('image')
                 ->store('posts', 'public');
         }
 
         $post->caption = $request->caption;
-
         $post->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Post berhasil diupdate',
+            'message' => 'Post berhasil diupdate.',
             'data' => $post
         ]);
     }
@@ -102,22 +98,19 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-         if ($post->user_id != Auth::id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized'
-            ], 403);
-        }
+        $this->authorize('delete', $post);
 
-        Storage::disk('public')->delete($post->image);
+        if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
 
         $post->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Post berhasil dihapus'
+            'message' => 'Post berhasil dihapus.'
         ]);
     }
 }

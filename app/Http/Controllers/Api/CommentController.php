@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -30,7 +29,7 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request, Post $post)
     {
         $comment = Comment::create([
-            'user_id' => Auth::id(),
+            'user_id' => auth()->id(),
             'post_id' => $post->id,
             'comment' => $request->comment,
         ]);
@@ -38,12 +37,12 @@ class CommentController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Komentar berhasil ditambahkan.',
-            'data' => $comment
+            'data' => $comment->load('user')
         ], 201);
     }
 
     /**
-     * Detail komentar (opsional)
+     * Detail komentar
      */
     public function show(Comment $comment)
     {
@@ -54,16 +53,11 @@ class CommentController extends Controller
     }
 
     /**
-     * Update komentar (opsional)
+     * Update komentar
      */
     public function update(StoreCommentRequest $request, Comment $comment)
     {
-        if ($comment->user_id != Auth::id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized'
-            ], 403);
-        }
+        $this->authorize('update', $comment);
 
         $comment->update([
             'comment' => $request->comment,
@@ -81,12 +75,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        if ($comment->user_id != Auth::id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized'
-            ], 403);
-        }
+        $this->authorize('delete', $comment);
 
         $comment->delete();
 

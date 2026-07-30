@@ -15,12 +15,15 @@ class PostController extends Controller
      */
     public function index()
     {
-         $posts = Post::with('user')
-            ->latest()
-            ->paginate(10);
+        $posts = Post::with([
+            'user',
+            'likes',
+            'comments.user'
+        ])
+        ->latest()
+        ->paginate(10);
 
         return view('posts.index', compact('posts'));
-
     }
 
     /**
@@ -28,16 +31,15 @@ class PostController extends Controller
      */
     public function create()
     {
-         return view('posts.create');
+        return view('posts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-         $image = $request->file('image')
-            ->store('posts', 'public');
+        $image = $request->file('image')->store('posts', 'public');
 
         Post::create([
             'user_id' => Auth::id(),
@@ -55,8 +57,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        $post->load([
+            'user',
+            'likes',
+            'comments.user'
+        ]);
 
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -64,9 +71,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        if ($post->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('update', $post);
 
         return view('posts.edit', compact('post'));
     }
@@ -76,23 +81,19 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-         if ($post->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('update', $post);
 
         if ($request->hasFile('image')) {
 
-            Storage::disk('public')
-                ->delete($post->image);
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
 
-            $image = $request->file('image')
+            $post->image = $request->file('image')
                 ->store('posts', 'public');
-
-            $post->image = $image;
         }
 
         $post->caption = $request->caption;
-
         $post->save();
 
         return redirect()
@@ -105,12 +106,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-         if ($post->user_id != Auth::id()) {
-            abort(403);
-        }
+        $this->authorize('delete', $post);
 
-        Storage::disk('public')
-            ->delete($post->image);
+        if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
 
         $post->delete();
 
