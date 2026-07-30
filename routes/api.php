@@ -10,4 +10,8 @@ Route::get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('posts', PostController::class);
+     // Like
+    Route::post('/posts/{post}/like', [LikeController::class, 'store']);
+    Route::delete('/posts/{post}/like', [LikeController::class, 'destroy']);
+
 });
