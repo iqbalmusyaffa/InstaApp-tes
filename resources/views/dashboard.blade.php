@@ -108,11 +108,18 @@
                         <span class="text-gray-400 text-xs font-normal">• {{ $post->created_at->diffForHumans(null, true, true) }}</span>
                     </div>
                     @if(Auth::id() === $post->user_id)
-                    <form action="{{ route('posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Delete this post?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-semibold">Delete</button>
-                    </form>
+                    <div class="relative group cursor-pointer">
+                        <button class="text-gray-500 hover:text-black p-1 focus:outline-none">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        </button>
+                        <div class="absolute right-0 mt-1 w-28 bg-white border border-gray-100 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                            <form action="/posts/{{ $post->id }}" method="POST" onsubmit="return confirm('Delete this post?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50 font-semibold rounded-md">Delete</button>
+                            </form>
+                        </div>
+                    </div>
                     @endif
                 </div>
                 <img src="{{ asset('storage/' . $post->image) }}" class="w-full object-cover aspect-square bg-gray-100">
@@ -139,9 +146,18 @@
                     @if($post->comments->count() > 0)
                     <div class="mt-2 text-sm max-h-24 overflow-y-auto space-y-1">
                         @foreach($post->comments as $comment)
-                            <div>
-                                <span class="font-semibold">{{ $comment->user->name }}</span> 
-                                <span class="text-gray-800">{{ $comment->comment }}</span>
+                            <div class="flex justify-between items-start group">
+                                <div>
+                                    <span class="font-semibold">{{ $comment->user->name }}</span> 
+                                    <span class="text-gray-800">{{ $comment->comment }}</span>
+                                </div>
+                                @if(Auth::id() === $comment->user_id)
+                                <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="opacity-0 group-hover:opacity-100 transition-opacity">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2">x</button>
+                                </form>
+                                @endif
                             </div>
                         @endforeach
                     </div>
