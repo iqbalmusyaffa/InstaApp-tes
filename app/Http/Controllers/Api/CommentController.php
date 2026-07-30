@@ -3,47 +3,96 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreCommentRequest;
+use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan semua komentar dari sebuah post
      */
-    public function index()
+    public function index(Post $post)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'data' => $post->comments()
+                ->with('user')
+                ->latest()
+                ->get()
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menambahkan komentar
      */
-    public function store(Request $request)
+    public function store(StoreCommentRequest $request, Post $post)
     {
-        //
+        $comment = Comment::create([
+            'user_id' => Auth::id(),
+            'post_id' => $post->id,
+            'comment' => $request->comment,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Komentar berhasil ditambahkan.',
+            'data' => $comment
+        ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Detail komentar (opsional)
      */
-    public function show(string $id)
+    public function show(Comment $comment)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'data' => $comment->load('user', 'post')
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update komentar (opsional)
      */
-    public function update(Request $request, string $id)
+    public function update(StoreCommentRequest $request, Comment $comment)
     {
-        //
+        if ($comment->user_id != Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $comment->update([
+            'comment' => $request->comment,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Komentar berhasil diperbarui.',
+            'data' => $comment
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus komentar
      */
-    public function destroy(string $id)
+    public function destroy(Comment $comment)
     {
-        //
+        if ($comment->user_id != Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $comment->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Komentar berhasil dihapus.'
+        ]);
     }
 }
