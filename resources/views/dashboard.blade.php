@@ -47,7 +47,7 @@
                 <a href="#" class="text-black">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
                 </a>
-                <a href="/profile" class="block">
+                <a href="{{ route('user.show', Auth::user()) }}" class="block">
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-7 h-7 rounded-full border border-gray-200 object-cover hover:ring-1 hover:ring-gray-300 transition-all">
                 </a>
 
@@ -103,8 +103,10 @@
             <div class="bg-white border border-gray-200 rounded-sm">
                 <div class="flex items-center justify-between p-3">
                     <div class="flex items-center gap-3">
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($post->user->name) }}&background=random" class="w-8 h-8 rounded-full border border-gray-200">
-                        <span class="font-semibold text-sm">{{ $post->user->name }}</span>
+                        <a href="{{ route('user.show', $post->user) }}" class="flex items-center gap-3 group">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($post->user->name) }}&background=random" class="w-8 h-8 rounded-full border border-gray-200">
+                            <span class="font-semibold text-sm group-hover:text-gray-600">{{ $post->user->name }}</span>
+                        </a>
                         <span class="text-gray-400 text-xs font-normal">• {{ $post->created_at->diffForHumans(null, true, true) }}</span>
                     </div>
                     @if(Auth::id() === $post->user_id)
@@ -122,7 +124,7 @@
                     </div>
                     @endif
                 </div>
-                <img src="{{ asset('storage/' . $post->image) }}" class="w-full object-cover aspect-square bg-gray-100">
+                <img src="{{ asset('storage/' . $post->image) }}" class="w-full h-auto max-h-[700px] object-contain bg-gray-50">
                 <div class="p-3">
                     <div class="flex gap-4 mb-2 items-center">
                         @php
@@ -141,14 +143,14 @@
                     </div>
                     <div class="font-semibold text-sm mb-1">{{ $post->likes->count() }} likes</div>
                     <div class="text-sm">
-                        <span class="font-semibold">{{ $post->user->name }}</span> {{ $post->caption }}
+                        <a href="{{ route('user.show', $post->user) }}" class="font-semibold hover:text-gray-600">{{ $post->user->name }}</a> {{ $post->caption }}
                     </div>
                     @if($post->comments->count() > 0)
                     <div class="mt-2 text-sm max-h-24 overflow-y-auto space-y-1">
                         @foreach($post->comments as $comment)
                             <div class="flex justify-between items-start group">
                                 <div>
-                                    <span class="font-semibold">{{ $comment->user->name }}</span> 
+                                    <a href="{{ route('user.show', $comment->user) }}" class="font-semibold hover:text-gray-600">{{ $comment->user->name }}</a> 
                                     <span class="text-gray-800">{{ $comment->comment }}</span>
                                 </div>
                                 @if(Auth::id() === $comment->user_id)
@@ -222,7 +224,7 @@
         <a href="/dashboard" class="p-2"><svg class="w-6 h-6 fill-current text-black" viewBox="0 0 24 24"><path d="M12 2.099l-9 7.64v12.161h6v-7.9h6v7.9h6v-12.16l-9-7.641zm0 2.617l6 5.093v9.091h-2v-7.9h-8v7.9h-2v-9.091l6-5.093z"/></svg></a>
         <a href="#" class="p-2"><svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></a>
         <a href="#" class="p-2"><svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg></a>
-        <a href="/profile" class="p-2"><img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-6 h-6 rounded-full border border-gray-300"></a>
+        <a href="{{ route('user.show', Auth::user()) }}" class="p-2"><img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-6 h-6 rounded-full border border-gray-300"></a>
     </div>
 
 </body>
