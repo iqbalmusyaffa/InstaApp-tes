@@ -41,12 +41,7 @@
                 <a href="/dashboard" class="text-black">
                     <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.099l-9 7.64v12.161h6v-7.9h6v7.9h6v-12.16l-9-7.641zm0 2.617l6 5.093v9.091h-2v-7.9h-8v7.9h-2v-9.091l6-5.093z"/></svg>
                 </a>
-                <a href="#" class="text-black hidden sm:block">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                </a>
-                <a href="#" class="text-black">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-                </a>
+
                 <a href="{{ route('user.show', Auth::user()) }}" class="block">
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-7 h-7 rounded-full border border-gray-200 object-cover hover:ring-1 hover:ring-gray-300 transition-all">
                 </a>
@@ -222,8 +217,7 @@
     </main>
     <div class="sm:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex justify-around items-center h-12 z-50">
         <a href="/dashboard" class="p-2"><svg class="w-6 h-6 fill-current text-black" viewBox="0 0 24 24"><path d="M12 2.099l-9 7.64v12.161h6v-7.9h6v7.9h6v-12.16l-9-7.641zm0 2.617l6 5.093v9.091h-2v-7.9h-8v7.9h-2v-9.091l6-5.093z"/></svg></a>
-        <a href="#" class="p-2"><svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></a>
-        <a href="#" class="p-2"><svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg></a>
+
         <a href="{{ route('user.show', Auth::user()) }}" class="p-2"><img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" class="w-6 h-6 rounded-full border border-gray-300"></a>
     </div>
 
