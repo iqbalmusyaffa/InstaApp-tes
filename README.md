@@ -1,59 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# InstaApp - Aplikasi Web Clone Instagram
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+InstaApp adalah sebuah aplikasi web sederhana yang mensimulasikan fitur-fitur dasar dari media sosial Instagram. Dibangun untuk keperluan *Technical Test* dan *Portfolio*, aplikasi ini memungkinkan penggunanya untuk mendaftar akun, membagikan momen lewat foto dan teks, serta saling berinteraksi dengan menekan *like* atau memberikan komentar.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠️ Teknologi yang Digunakan (Tech Stack)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aplikasi ini dibangun menggunakan arsitektur web modern yang tangguh:
+- **Backend:** Laravel 11 (PHP Framework)
+- **Frontend UI:** Tailwind CSS (Utility-first CSS Framework)
+- **Authentication:** Laravel Breeze (Web) & Laravel Sanctum (API)
+- **Database:** MySQL (Sistem Manajemen Basis Data Relasional standar industri)
+- **Asset Bundler:** Vite (Terintegrasi dengan Laravel)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📁 Struktur Folder Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Berikut adalah gambaran struktur direktori proyek ini beserta fungsinya:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```text
+InstaApp/
+├── app/               # Logika inti aplikasi, berisi Controllers, Models, dan Policies.
+├── bootstrap/         # File konfigurasi yang dijalankan saat aplikasi pertama kali dimuat.
+├── config/            # Tempat seluruh file pengaturan aplikasi (database, session, auth, dll).
+├── database/          # Migrasi tabel (Migrations) dan data palsu (Seeders/Factories).
+├── public/            # File publik (index.php), gambar, dan aset yang dikompilasi (CSS/JS).
+├── resources/         # Tempat file frontend (Tampilan Blade/HTML, CSS mentah, dan JS).
+├── routes/            # Pengaturan rute URL (web.php untuk UI, api.php untuk RESTful API).
+├── storage/           # Tempat penyimpanan foto/file hasil unggahan pengguna (app/public).
+├── tests/             # File pengujian otomatis (Testing) untuk aplikasi.
+├── .env               # File rahasia berisi konfigurasi environment (Database, API Keys).
+└── README.md          # Dokumentasi proyek (File yang sedang Anda baca).
+```
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ⚙️ Cara Instalasi & Menjalankan Aplikasi (Lokal)
 
-### Premium Partners
+Ikuti langkah-langkah berikut untuk menjalankan aplikasi ini di komputer Anda:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. **Clone Repository Project**
+   Buka terminal/CMD, lalu jalankan perintah ini untuk mengunduh kode aplikasi:
+   ```bash
+   git clone https://github.com/iqbalmusyaffa/InstaApp-tes.git
+   cd InstaApp-tes
+   ```
 
-## Contributing
+2. **Install Dependensi PHP (Vendor)**
+   ```bash
+   composer install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Install Dependensi Node.js (Frontend)**
+   ```bash
+   npm install
+   ```
 
-## Code of Conduct
+4. **Konfigurasi Environment**
+   Salin file konfigurasi bawaan Laravel:
+   ```bash
+   cp .env.example .env
+   ```
+   Buka file `.env` dan pastikan konfigurasi `DB_CONNECTION` diatur ke `mysql` serta nama `DB_DATABASE` disesuaikan. Buat database kosong di MySQL (contoh: `instaapp`) sebelum melanjutkan.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+   ```
 
-## Security Vulnerabilities
+6. **Migrasi Database & Seeding (Data Awal)**
+   Perintah ini akan membuat tabel dan mengisi akun contoh (dummy data):
+   ```bash
+   php artisan migrate --seed
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. **Tautkan Folder Penyimpanan Foto (Storage Link)**
+   Sangat penting agar foto yang diunggah bisa ditampilkan di browser:
+   ```bash
+   php artisan storage:link
+   ```
 
-## License
+8. **Jalankan Vite Server untuk Frontend (Tailwind/CSS)**
+   Buka terminal baru dan biarkan perintah ini berjalan di latar belakang:
+   ```bash
+   npm run dev
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+9. **Jalankan Server Lokal Laravel**
+   Kembali ke terminal utama, jalankan:
+   ```bash
+   php artisan serve
+   ```
+   🎉 Aplikasi Anda sekarang berjalan! Buka browser dan akses: **http://localhost:8000**
+
+---
+
+## 🌍 Dokumentasi Web Routes (Browser UI)
+
+Ini adalah daftar rute standar yang menggerakkan antarmuka visual InstaApp (diakses lewat *Browser*):
+
+### 1. Halaman Publik & Autentikasi
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| GET | `/` | Halaman utama (Welcome) sekaligus Login/Register |
+| POST | `/login` | Memproses masuk akun |
+| POST | `/register`| Mendaftarkan akun baru |
+| POST | `/logout` | Keluar dari sesi (Logout) |
+| GET/POST | `/forgot-password`| Mengurus lupa kata sandi (*Reset link*) |
+
+### 2. Fitur Utama Postingan (Butuh Login)
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| GET | `/dashboard` | Beranda (Timeline) & Form Upload Postingan |
+| POST | `/posts` | Memproses unggahan foto baru |
+| DELETE | `/posts/{id}` | Menghapus postingan (termasuk foto di `storage`) |
+| POST | `/posts/{id}/like` | Menyukai sebuah postingan |
+| DELETE | `/posts/{id}/like` | Batal menyukai (Unlike) |
+| POST | `/posts/{id}/comments`| Mengirim komentar |
+| DELETE | `/comments/{id}` | Menghapus komentar |
+
+### 3. Profil Pengguna
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| GET | `/user/{id}` | Halaman Profil Utama (Grid postingan user) |
+| GET | `/profile` | Halaman Edit Profil & Ganti Password |
+| PATCH | `/profile` | Menyimpan perubahan profil |
+| DELETE | `/profile` | Menghapus akun pengguna permanen |
+
+---
+
+## 🌐 Dokumentasi RESTful API (Backend)
+
+Selain versi Web, InstaApp memiliki dukungan API menggunakan **Laravel Sanctum**. Seluruh Endpoint (kecuali login) membutuhkan token Bearer di *header*. (Base URL: `http://localhost:8000/api`)
+
+| Kategori | Method | Endpoint | Deskripsi |
+|----------|--------|----------|-----------|
+| **Auth** | POST | `/login` | Mendapatkan Token (Parameter: `email`, `password`) |
+| **Auth** | GET | `/user` | Melihat profil dari token yang sedang aktif |
+| **Posts**| GET | `/posts` | Daftar seluruh postingan |
+| **Posts**| POST | `/posts` | Upload post baru via API (`caption`, `image`) |
+| **Posts**| GET | `/posts/{id}` | Detail sebuah postingan |
+| **Posts**| PUT | `/posts/{id}` | Edit caption postingan |
+| **Posts**| DELETE | `/posts/{id}` | Hapus postingan beserta filenya |
+| **Likes**| POST | `/posts/{id}/like` | Menyukai postingan via API |
+| **Likes**| DELETE | `/posts/{id}/like`| Membatalkan like |
+| **Comments**| GET | `/posts/{id}/comments` | Daftar komentar di satu postingan |
+| **Comments**| POST | `/posts/{id}/comments` | Tambah komentar baru (`comment`) |
+| **Comments**| DELETE | `/comments/{id}` | Hapus komentar |
+
+---
+
+## 🔒 Kebijakan Keamanan (Authorization)
+InstaApp dilengkapi perlindungan hak akses (Policy):
+- Anda **hanya bisa** menghapus Postingan dan Komentar yang Anda buat sendiri.
+- Mencoba memaksa hapus (melalui modifikasi URL/API) terhadap postingan orang lain akan otomatis digagalkan oleh sistem (*403 Forbidden*).
+- Menghapus postingan akan **secara otomatis** menghapus gambar fisik dari folder server untuk menghemat penyimpanan.han *Storage bloat*).
