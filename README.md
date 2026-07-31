@@ -114,6 +114,8 @@ Ini adalah daftar rute standar yang menggerakkan antarmuka visual InstaApp (diak
 |--------|----------|-----------|
 | GET | `/dashboard` | Beranda (Timeline) & Form Upload Postingan |
 | POST | `/posts` | Memproses unggahan foto baru |
+| GET | `/posts/{id}/edit` | Menampilkan form edit postingan |
+| PUT/PATCH | `/posts/{id}` | Memperbarui caption dan foto postingan |
 | DELETE | `/posts/{id}` | Menghapus postingan (termasuk foto di `storage`) |
 | POST | `/posts/{id}/like` | Menyukai sebuah postingan |
 | DELETE | `/posts/{id}/like` | Batal menyukai (Unlike) |
@@ -141,7 +143,7 @@ Selain versi Web, InstaApp memiliki dukungan API menggunakan **Laravel Sanctum**
 | **Posts**| GET | `/posts` | Daftar seluruh postingan |
 | **Posts**| POST | `/posts` | Upload post baru via API (`caption`, `image`) |
 | **Posts**| GET | `/posts/{id}` | Detail sebuah postingan |
-| **Posts**| PUT | `/posts/{id}` | Edit caption postingan |
+| **Posts**| PUT/PATCH | `/posts/{id}` | Edit caption dan gambar postingan |
 | **Posts**| DELETE | `/posts/{id}` | Hapus postingan beserta filenya |
 | **Likes**| POST | `/posts/{id}/like` | Menyukai postingan via API |
 | **Likes**| DELETE | `/posts/{id}/like`| Membatalkan like |
@@ -153,6 +155,6 @@ Selain versi Web, InstaApp memiliki dukungan API menggunakan **Laravel Sanctum**
 
 ## 🔒 Kebijakan Keamanan (Authorization)
 InstaApp dilengkapi perlindungan hak akses (Policy):
-- Anda **hanya bisa** menghapus Postingan dan Komentar yang Anda buat sendiri.
+- Anda **hanya bisa** mengedit dan menghapus Postingan atau Komentar yang Anda buat sendiri.
 - Mencoba memaksa hapus (melalui modifikasi URL/API) terhadap postingan orang lain akan otomatis digagalkan oleh sistem (*403 Forbidden*).
 - Menghapus postingan akan **secara otomatis** menghapus gambar fisik dari folder server untuk menghemat penyimpanan.han *Storage bloat*).
