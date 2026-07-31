@@ -108,10 +108,11 @@
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                         </button>
                         <div class="absolute right-0 mt-1 w-28 bg-white border border-gray-100 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                            <a href="{{ route('posts.edit', $post) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-semibold">Edit</a>
                             <form action="/posts/{{ $post->id }}" method="POST" onsubmit="return confirm('Delete this post?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50 font-semibold rounded-md">Delete</button>
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50 font-semibold rounded-none rounded-b-md">Delete</button>
                             </form>
                         </div>
                     </div>
